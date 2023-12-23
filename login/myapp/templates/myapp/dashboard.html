@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% csrf_token %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome to the Dashboard!</h2>
+    <div>
+        <h3>Random Number Table</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Random Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="randomNumberPlaceholder">{{ number }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function updateRandomNumber() {
+            fetch('/myapp/get_latest_random_number/')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the displayed random number
+                    document.getElementById('randomNumberPlaceholder').innerText = data.number;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Update random number every second
+        setInterval(updateRandomNumber, 1000);
+    </script>
+</body>
+</html>
